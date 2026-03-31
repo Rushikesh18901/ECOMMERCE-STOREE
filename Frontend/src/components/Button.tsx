@@ -5,6 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
 }
 
+// Reusable button with customizable variant and size
 export default function Button({
   children,
   variant = 'primary',
@@ -27,10 +28,7 @@ export default function Button({
   };
 
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
-    >
+    <button className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`} {...props}>
       {children}
     </button>
   );

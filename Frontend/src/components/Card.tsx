@@ -6,13 +6,10 @@ interface CardProps {
   hover?: boolean;
 }
 
+// Container component with optional hover effect
 export default function Card({ children, className = '', hover = false }: CardProps) {
   return (
-    <div
-      className={`bg-white rounded-xl shadow-sm ${
-        hover ? 'hover:shadow-lg transition-shadow duration-300' : ''
-      } ${className}`}
-    >
+    <div className={`bg-white rounded-xl shadow-sm ${hover ? 'hover:shadow-lg transition-shadow duration-300' : ''} ${className}`}>
       {children}
     </div>
   );

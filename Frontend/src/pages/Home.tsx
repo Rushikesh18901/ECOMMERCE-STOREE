@@ -7,35 +7,32 @@ function Home() {
     const [activeCategory, setActiveCategory] = useState("");
     const navigate = useNavigate();
 
+    // Fetch products from backend with optional category filter
     const fetchProducts = async (category = "") => {
         let url = "http://127.0.0.1:8000/products";
-
         if (category) {
             url += `?category=${category}`;
         }
-
         const res = await fetch(url);
         const data = await res.json();
         setProducts(data);
     };
 
+    // Load products on component mount
     useEffect(() => {
         fetchProducts();
     }, []);
 
     return (
         <div>
-
-            {/* 🔥 EXISTING HERO (KEEP SAME DESIGN) */}
+            {/* Hero section with banner */}
             <Hero />
 
-            {/* 🔥 PRODUCT SECTION */}
+            {/* Product listing section */}
             <div className="px-10 py-10">
-
-                {/* SECTION TITLE */}
                 <h2 className="text-2xl font-bold mb-6">Our Products</h2>
 
-                {/* 🔥 FILTER BUTTONS (MATCH YOUR UI STYLE) */}
+                {/* Category filter buttons */}
                 <div className="flex gap-4 mb-8">
                     {["", "men", "women", "kids"].map((cat) => (
                         <button
@@ -55,7 +52,7 @@ function Home() {
                     ))}
                 </div>
 
-                {/* 🔥 PRODUCT GRID (PREMIUM LOOK) */}
+                {/* Product grid display */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     {products.map((p) => (
                         <div
@@ -63,7 +60,7 @@ function Home() {
                             onClick={() => navigate(`/product/${p.id}`)}
                             className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 bg-white cursor-pointer"
                         >
-                            {/* IMAGE */}
+                            {/* Product image */}
                             <div className="h-60 bg-gray-100 flex items-center justify-center overflow-hidden">
                                 {p.image ? (
                                     <img
@@ -76,7 +73,7 @@ function Home() {
                                 )}
                             </div>
 
-                            {/* CONTENT */}
+                            {/* Product details */}
                             <div className="p-4">
                                 <h3 className="font-semibold text-lg">{p.name}</h3>
                                 <p className="text-sm text-gray-500 line-clamp-2">
@@ -90,6 +87,7 @@ function Home() {
                                     </span>
                                 </div>
 
+                                {/* Add to cart button */}
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -103,7 +101,6 @@ function Home() {
                         </div>
                     ))}
                 </div>
-
             </div>
         </div>
     );

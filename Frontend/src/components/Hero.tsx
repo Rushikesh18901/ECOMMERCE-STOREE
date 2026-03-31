@@ -6,6 +6,7 @@ export default function Hero() {
     <div className="relative bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Hero content */}
           <div className="space-y-8">
             <div className="inline-block">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-slate-900 text-white">
@@ -21,6 +22,7 @@ export default function Hero() {
               Discover our curated collection of timeless pieces that blend sophistication with modern design.
             </p>
 
+            {/* CTA buttons */}
             <div className="flex flex-wrap gap-4">
               <Button size="lg" className="flex items-center gap-2">
                 Shop Now
@@ -31,6 +33,7 @@ export default function Hero() {
               </Button>
             </div>
 
+            {/* Stats display */}
             <div className="flex gap-8 pt-8">
               <div>
                 <p className="text-3xl font-bold text-gray-900">500+</p>
@@ -47,6 +50,7 @@ export default function Hero() {
             </div>
           </div>
 
+          {/* Hero image */}
           <div className="relative lg:h-[600px] hidden lg:block">
             <div className="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-300 rounded-3xl transform rotate-3"></div>
             <img
@@ -58,6 +62,7 @@ export default function Hero() {
         </div>
       </div>
 
+      {/* Decorative background elements */}
       <div className="absolute top-0 right-0 -z-10 transform translate-x-1/2 -translate-y-1/2">
         <div className="w-96 h-96 bg-slate-200 rounded-full opacity-20 blur-3xl"></div>
       </div>

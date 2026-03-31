@@ -23,7 +23,7 @@ A full-stack e-commerce application built with React, TypeScript, and Python.
 ### Backend
 - Python
 - FastAPI
-- SQLite (database)
+- Mongodb atlas (database)
 
 ## Prerequisites
 

@@ -4,10 +4,7 @@ from ..database import orders_collection
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
-
-# ==========================
-# ✅ PLACE ORDER
-# ==========================
+# Place a new order
 @router.post("")
 def place_order(order: Order):
     orders_collection.insert_one(order.dict())

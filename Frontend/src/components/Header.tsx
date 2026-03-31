@@ -12,12 +12,10 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
 
-  console.log("Header rendering, user:", user);
-
+  // Check for logged-in user from localStorage
   useEffect(() => {
     const checkUser = () => {
       const storedUser = localStorage.getItem("user");
-      console.log("Checking user in Header:", storedUser);
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       } else {
@@ -27,14 +25,14 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
 
     checkUser();
 
-    // Listen for localStorage changes (for cross-tab sync)
+    // Listen for storage changes (cross-tab sync)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "user") {
         checkUser();
       }
     };
 
-    // Listen for custom login event (same-tab navigation)
+    // Listen for custom login event (same-tab)
     const handleLoginEvent = () => {
       checkUser();
     };
@@ -47,6 +45,7 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
     };
   }, []);
 
+  // Clear user session and redirect to login
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -57,6 +56,7 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          {/* Logo and navigation */}
           <div className="flex items-center gap-8">
             <button className="lg:hidden p-2 hover:bg-gray-100 rounded-lg">
               <Menu className="w-6 h-6" />
@@ -83,12 +83,11 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
             </nav>
           </div>
 
+          {/* User actions and cart */}
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <span className="text-sm text-gray-600">
-                  {user.email}
-                </span>
+                <span className="text-sm text-gray-600">{user.email}</span>
 
                 {user.role === "admin" && (
                   <Link to="/admin" className="text-sm bg-blue-600 text-white px-3 py-1 rounded">
@@ -96,10 +95,7 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
                   </Link>
                 )}
 
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 text-white px-4 py-1 rounded"
-                >
+                <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-1 rounded">
                   Logout
                 </button>
               </>
@@ -119,10 +115,7 @@ export default function Header({ cartItemCount, onCartClick }: HeaderProps) {
               <User className="w-5 h-5 text-gray-700" />
             </button>
 
-            <button
-              onClick={onCartClick}
-              className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
+            <button onClick={onCartClick} className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <ShoppingCart className="w-5 h-5 text-gray-700" />
               {cartItemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-slate-900 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">

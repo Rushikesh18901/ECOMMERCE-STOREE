@@ -5,15 +5,16 @@ interface ProtectedRouteProps {
     role?: string;
 }
 
+// Protect routes requiring authentication
 export default function ProtectedRoute({ children, role }: ProtectedRouteProps) {
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
-    // ❌ Not logged in
+    // Redirect to login if not authenticated
     if (!user) {
         return <Navigate to="/login" />;
     }
 
-    // ❌ Wrong role
+    // Redirect to home if user lacks required role
     if (role && user.role !== role) {
         return <Navigate to="/" />;
     }

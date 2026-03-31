@@ -10,21 +10,25 @@ import Admin from "./pages/Admin";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
+  // State for cart count and visibility
   const [cartItemCount, setCartItemCount] = useState(0);
   const [showCart, setShowCart] = useState(false);
 
   return (
     <Router>
+      {/* Navigation header with cart */}
       <Header
         cartItemCount={cartItemCount}
         onCartClick={() => setShowCart(true)}
       />
+      
+      {/* Route definitions */}
       <Routes>
-        {/* PUBLIC */}
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* USER PAGE - Protected */}
+        {/* Protected user pages */}
         <Route
           path="/"
           element={
@@ -34,7 +38,7 @@ function App() {
           }
         />
 
-        {/* PRODUCT DETAIL - Protected */}
+        {/* Product detail page */}
         <Route
           path="/product/:id"
           element={
@@ -44,7 +48,7 @@ function App() {
           }
         />
 
-        {/* ADMIN PAGE - Protected with role */}
+        {/* Admin-only route */}
         <Route
           path="/admin"
           element={
@@ -54,6 +58,8 @@ function App() {
           }
         />
       </Routes>
+      
+      {/* AI chatbot widget */}
       <Chatbot />
     </Router>
   );

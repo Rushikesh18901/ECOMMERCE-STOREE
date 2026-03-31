@@ -9,6 +9,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // Authenticate user with backend
   const handleLogin = async () => {
     setError("");
     setLoading(true);
@@ -16,30 +17,26 @@ const Login = () => {
     try {
       const res = await fetch("http://127.0.0.1:8000/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
 
       const data = await res.json();
-      console.log("LOGIN RESPONSE:", data);
 
-      // ❌ Handle errors
+      // Handle login errors
       if (data.error) {
         setError(data.error);
         setLoading(false);
         return;
       }
 
-      // ✅ Store complete user data in localStorage
+      // Store user data in localStorage
       localStorage.setItem("user", JSON.stringify(data));
-      console.log("User stored:", data);
 
-      // Dispatch custom event to notify Header of login
+      // Notify Header component of login
       window.dispatchEvent(new Event("user-login"));
 
-      // ✅ Role-based redirect
+      // Redirect based on user role
       if (data.role === "admin") {
         navigate("/admin");
       } else {
@@ -47,7 +44,6 @@ const Login = () => {
       }
 
     } catch (err) {
-      console.error(err);
       setError("Something went wrong. Try again.");
     }
 
@@ -56,14 +52,12 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm">
-
         <h2 className="text-2xl font-bold mb-6 text-center">
           Welcome Back 👋
         </h2>
 
-        {/* ERROR MESSAGE */}
+        {/* Error message display */}
         {error && (
           <p className="text-red-500 text-sm mb-3 text-center">
             {error}
@@ -93,7 +87,6 @@ const Login = () => {
         >
           {loading ? "Logging in..." : "Login"}
         </button>
-
       </div>
     </div>
   );

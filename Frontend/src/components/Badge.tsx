@@ -5,6 +5,7 @@ interface BadgeProps {
   variant?: 'success' | 'warning' | 'error' | 'info';
 }
 
+// Status indicator badge with color variants
 export default function Badge({ children, variant = 'info' }: BadgeProps) {
   const variants = {
     success: 'bg-green-100 text-green-800',
