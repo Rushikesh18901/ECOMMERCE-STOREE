@@ -6,6 +6,8 @@ import shutil
 import os
 from bson import Binary
 
+router = APIRouter(prefix="/products", tags=["Products"])
+
 UPLOAD_FOLDER = "uploads"
 
 # Add new product with image upload
