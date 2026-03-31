@@ -1,10 +1,10 @@
 from fastapi import APIRouter, UploadFile, File, Form
 from ..models import Product
 from ..database import products_collection
+import base64
 import shutil
 import os
-
-router = APIRouter(prefix="/products", tags=["Products"])
+from bson import Binary
 
 UPLOAD_FOLDER = "uploads"
 
@@ -19,12 +19,13 @@ async def add_product(
     color: str = Form("Black"),
     image: UploadFile = File(...)
 ):
-    # Save uploaded image to uploads folder
-    file_path = f"{UPLOAD_FOLDER}/{image.filename}"
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(image.file, buffer)
-
+    # Read image file and convert to Base64
+    image_data = await image.read()
+    base64_image = base64.b64encode(image_data).decode('utf-8')
+    
+    # Determine content type
+    content_type = image.content_type or "image/jpeg"
+    
     # Create product document and insert into database
     product = {
         "name": name,
@@ -33,7 +34,8 @@ async def add_product(
         "category": category,
         "size": size.split(","),
         "color": color.split(","),
-        "image": f"http://127.0.0.1:8000/{file_path}"
+        "image_data": base64_image,
+        "image_content_type": content_type
     }
     products_collection.insert_one(product)
     return {"message": "Product added successfully"}
@@ -55,6 +57,13 @@ def get_products(category: str = ""):
             product["rating"] = 4.5
         if "reviews" not in product:
             product["reviews"] = 0
+        
+        # Convert base64 image to data URL for frontend display
+        if "image_data" in product and "image_content_type" in product:
+            product["image"] = f"data:{product['image_content_type']};base64,{product['image_data']}"
+            # Remove internal fields
+            product.pop("image_data", None)
+            product.pop("image_content_type", None)
             
         products.append(product)
     return products
@@ -121,11 +130,11 @@ async def update_product(
         
         # Handle optional image upload
         if image:
-            file_path = f"{UPLOAD_FOLDER}/{image.filename}"
-            os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-            with open(file_path, "wb") as buffer:
-                shutil.copyfileobj(image.file, buffer)
-            update_data["image"] = f"http://127.0.0.1:8000/{file_path}"
+            image_data = await image.read()
+            base64_image = base64.b64encode(image_data).decode('utf-8')
+            content_type = image.content_type or "image/jpeg"
+            update_data["image_data"] = base64_image
+            update_data["image_content_type"] = content_type
         
         result = products_collection.update_one(
             {"_id": ObjectId(id)},
